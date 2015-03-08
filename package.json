@@ -1,0 +1,47 @@
+{
+  "name": "engine-nunjucks",
+  "version": "0.0.1",
+  "description": "Nunjucks template engine. used with verb, assemble or anything that support Engine.",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha -R spec",
+    "make-docs": "node ./verbfile.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "http://github.com/airtonix/engine-nunjucks.git"
+  },
+  "keywords": [
+    "assemble",
+    "engine",
+    "verb",
+    "static site generator",
+    "template",
+    "nunjucks"
+  ],
+  "author": "Zenobius Jiricek <airtonix@gmail.com>",
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "https://github.com/airtonix/engine-nunjucks/blob/master/LICENSE-MIT"
+    }
+  ],
+  "bugs": {
+    "url": "https://github.com/airtonix/engine-nunjucks/issues"
+  },
+  "homepage": "https://github.com/airtonix/engine-nunjucks",
+  "dependencies": {
+    "chalk": "^1.0.0",
+    "chokidar": "^1.0.0-rc4",
+    "engine-utils": "^0.1.1",
+    "extend-shallow": "^1.1.2",
+    "lodash": "^3.4.0",
+    "nunjucks": "^1.2.0"
+  },
+  "devDependencies": {
+    "assemble": "git+https://github.com/assemble/assemble.git#v0.6.0",
+    "mocha": "^2.2.0",
+    "should": "^5.1.0",
+    "verb": "^0.6.2"
+  }
+}
