@@ -1,6 +1,6 @@
 {
   "name": "template-nunjucks",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Nunjucks template engine. used with verb, assemble or anything that support Engine.",
   "main": "index.js",
   "scripts": {
