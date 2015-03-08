@@ -1,5 +1,5 @@
 {
-  "name": "engine-nunjucks",
+  "name": "template-nunjucks",
   "version": "0.0.1",
   "description": "Nunjucks template engine. used with verb, assemble or anything that support Engine.",
   "main": "index.js",
@@ -9,11 +9,11 @@
   },
   "repository": {
     "type": "git",
-    "url": "http://github.com/airtonix/engine-nunjucks.git"
+    "url": "http://github.com/airtonix/template-nunjucks.git"
   },
   "keywords": [
     "assemble",
-    "engine",
+    "template",
     "verb",
     "static site generator",
     "template",
@@ -23,13 +23,13 @@
   "licenses": [
     {
       "type": "MIT",
-      "url": "https://github.com/airtonix/engine-nunjucks/blob/master/LICENSE-MIT"
+      "url": "https://github.com/airtonix/template-nunjucks/blob/master/LICENSE-MIT"
     }
   ],
   "bugs": {
-    "url": "https://github.com/airtonix/engine-nunjucks/issues"
+    "url": "https://github.com/airtonix/template-nunjucks/issues"
   },
-  "homepage": "https://github.com/airtonix/engine-nunjucks",
+  "homepage": "https://github.com/airtonix/template-nunjucks",
   "dependencies": {
     "chalk": "^1.0.0",
     "chokidar": "^1.0.0-rc4",
