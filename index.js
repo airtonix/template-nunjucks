@@ -5,10 +5,12 @@ var _ = require('lodash'),
 	extend = require('extend-shallow'),
 	chalk = require('chalk');
 
+
 /**
  * Nunjucks Support
  */
 var engine = utils.fromStringRenderer('nunjucks');
+
 
 /**
  * Common Defaults
@@ -37,8 +39,6 @@ var defaults = {
  * @param  {Function} `callback`
  * @api public
  */
-
-
 engine.render = function(src, options, callback) {
 
 	if (typeof options === 'function') {
@@ -62,6 +62,7 @@ engine.render = function(src, options, callback) {
 	}
 };
 
+
 /**
  * Renders a nunjuck tempalte file
  * 
@@ -71,7 +72,7 @@ engine.render = function(src, options, callback) {
  * @return {[type]} null
  * @api public
  */
-engine.renderFile = function renderFile(filepath, options, callback) {
+engine.renderFile = function(filepath, options, callback) {
 	if (typeof options === 'function') {
 		callback = options;
 		options = {};
@@ -115,6 +116,7 @@ engine.addGlobal = function(name, value) {
 	engine.nunjucks.addGlobal(name, value);
 };
 
+
 /**
  * Add a template tag
  * 
@@ -138,14 +140,15 @@ engine.addFilter = function(name, fn) {
 	engine.nunjucks.addFilter(name, fn);
 };
 
+
 module.exports = engine;
+
 
 /**
  * Helper function
  * 
  * @api private
  */
-
 function logError(err, options) {
   err.message = err.message
     + ' in file: ' + err.filename

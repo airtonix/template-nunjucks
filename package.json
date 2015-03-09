@@ -4,8 +4,7 @@
   "description": "Nunjucks template engine. used with verb, assemble or anything that support Engine.",
   "main": "index.js",
   "scripts": {
-    "test": "mocha -R spec",
-    "make-docs": "node ./verbfile.js"
+    "test": "mocha -R spec"
   },
   "repository": {
     "type": "git",
@@ -33,6 +32,7 @@
   "dependencies": {
     "chalk": "^1.0.0",
     "chokidar": "^1.0.0-rc4",
+    "coffee-script": "^1.9.1",
     "engine-utils": "^0.1.1",
     "extend-shallow": "^1.1.2",
     "lodash": "^3.4.0",
