@@ -23,7 +23,7 @@ var templateFilePath = path.join(inPath, 'index.html')
 var str = fs.readFileSync(templateFilePath, 'utf-8')
 
 beforeEach(function(done){
-	engine.configure(inPath);
+	engine.configure({root: inPath});
 	done();
 })
 
@@ -40,7 +40,7 @@ describe('.render()', function() {
 });
 
 describe('.renderFile()', function() {
-	it('should process a Nunjucks file.', function(done) {
+	it('should process a unjucks file.', function(done) {
 		engine.renderFile('index.html', data, function (err, html) {
 			should.not.exist(err);
 			html.should.equal(expected);
@@ -49,11 +49,18 @@ describe('.renderFile()', function() {
 	});
 });
 
+describe('.renderSync()', function() {
+	it('should synchronously render a Nunjucks string.', function(done) {
+		var html = engine.renderSync(str, data);
+		html.should.equal(expected);
+		done();
+	});
+});
+
 describe('verb usage', function() {
 	it('should work with verb', function(done) {
 		verb.engine('html', engine);
 		verb.data(data);
-
 		verb.create('page', {isRenderable: true});
 		verb.pages(templateFilePath);
 		verb.render('index.html', function(err, html) {
