@@ -10,20 +10,77 @@ var _ = require('lodash'),
  * Nunjucks Support
  */
 var engine = utils.fromStringRenderer('nunjucks');
-
+var env = null;
+var loader = null;
 
 /**
  * Common Defaults
  */
 var defaults = {
-	templateRoot: 'string',
-	customFiltersPath: false,
-	customTagsPath: []
+	root: './templates',
+	filters: false,
+	tags: false,
+	destExt: '.html'
+};
+
+engine.options = defaults
+
+/**
+ * Configure Nunjucks
+ * 
+ * @param  {String} `relativeRootPath` Relative path to template root directory
+ * @api public
+ */
+engine.configure = function(options){
+	engine.options = _.merge({}, defaults, options)
+	loader = new nunjucks.FileSystemLoader(engine.options.root);
+	env = new nunjucks.Environment(loader);
+}
+
+
+/**
+ * Express Support
+ */
+engine.__express = engine.renderFile;
+	
+
+/**
+ * Add a global value that will be available to all templates. Note: this will overwrite any existing global called name.
+ * 
+ * @param  {String} `name`
+ * @return {String|Object|Array|Function|Number} `value`
+ * @api public
+ */
+engine.addGlobal = function(name, value) {
+	env.addGlobal(name, value);
+};
+
+/**
+ * Add a template tag
+ * 
+ * @param  {String} `name`
+ * @return {Function} `fn`
+ * @api public
+ */
+engine.addTag = function(name, fn) {
+	env.addExtension(name, fn);
 };
 
 
 /**
- * Nunjucks Render String
+ * Add a filter function
+ * 
+ * @param  {String} `name`
+ * @return {Function} `fn`
+ * @api public
+ */
+engine.addFilter = function(name, fn) {
+	env.addFilter(name, fn);
+};
+
+
+/**
+ * Async Nunjucks String Render
  *
  * ```js
  * var str = '{% for key, value in object %}[{{ key }}:{{ value }}]{% endfor %}'
@@ -48,23 +105,39 @@ engine.render = function(src, options, callback) {
 
 	options = extend({}, defaults, options);
 	try{
-		engine.nunjucks.renderString(src, options, function(err, response){
-			if(err){
-				callback(logError(err, options));
-				return;
-			}
-
-			callback(null, response, '.html');
-
-		});
+		env.renderString(src, options, callback);
 	} catch(ex) {
 		callback(ex, null);
+		return;
 	}
 };
 
 
 /**
- * Renders a nunjuck tempalte file
+ * Synchronously Nunjucks String Render.
+ *
+ * ```js
+ * var engine = require('template-nunjucks');
+ * engine.renderSync('{{ name }}', {name: 'Jon'});
+ * //=> 'Jon'
+ * ```
+ * @param  {Object|Function} `str` The string to render or compiled function.
+ * @param  {Object} `context`
+ * @return {String} Rendered string.
+ * @api public
+ */
+
+engine.renderSync = function(str, context) {
+  context = context || {};
+  try {
+  	return env.renderString(str, context);
+  } catch (err) {
+    return err;
+  }
+};
+
+/**
+ * Async Nunjucks File Render
  * 
  * @param  {String} `filepath`
  * @param  {Object|Function} `options` or callback function
@@ -73,89 +146,21 @@ engine.render = function(src, options, callback) {
  * @api public
  */
 engine.renderFile = function(filepath, options, callback) {
+
 	if (typeof options === 'function') {
 		callback = options;
 		options = {};
 	}
 
 	options = extend({}, defaults, options);
+
 	try {
-		engine.nunjucks.render(filepath, options, function (err, response) {
-			if(err){
-				callback(logError(err, options), null);
-				return;
-			}
-			callback(null, response);
-		});
+		env.render(filepath, options, callback);
 	} catch (err) {
-		callback(logError(err, options));
+		callback(err);
 		return;
 	}
 };
 
-
-/**
- * Configure Nunjucks
- * 
- * @param  {String} `relativeRootPath` Relative path to template root directory
- * @api public
- */
-engine.configure = function(relativeRootPath){
-	engine.nunjucks = new nunjucks.Environment(new nunjucks.FileSystemLoader(relativeRootPath));
-}
-
-
-/**
- * Add a global value that will be available to all templates. Note: this will overwrite any existing global called name.
- * 
- * @param  {String} `name`
- * @return {String|Object|Array|Function|Number} `value`
- * @api public
- */
-engine.addGlobal = function(name, value) {
-	engine.nunjucks.addGlobal(name, value);
-};
-
-
-/**
- * Add a template tag
- * 
- * @param  {String} `name`
- * @return {Function} `fn`
- * @api public
- */
-engine.addTag = function(name, fn) {
-	engine.nunjucks.addExtension(name, fn);
-};
-
-
-/**
- * Add a filter function
- * 
- * @param  {String} `name`
- * @return {Function} `fn`
- * @api public
- */
-engine.addFilter = function(name, fn) {
-	engine.nunjucks.addFilter(name, fn);
-};
-
-
 module.exports = engine;
 
-
-/**
- * Helper function
- * 
- * @api private
- */
-function logError(err, options) {
-  err.message = err.message
-    + ' in file: ' + err.filename
-    + ' line no: ' + err.line;
-
-  if (options.silent !== true) {
-    console.log(chalk.red('%j'), err);
-  }
-  return err;
-}

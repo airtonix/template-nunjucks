@@ -11,6 +11,7 @@ var fs = require('fs'),
 	path = require('path'),
 	should = require('should'),
 	assemble = require('assemble'),
+	verb = require('verb'),
 	engine = require('..');
 
 
@@ -48,22 +49,21 @@ describe('.renderFile()', function() {
 	});
 });
 
-// describe('verb usage', function() {
-//   it('should work with verb', function(done) {
-//     verb.engine('nunjucks', engine);
-//     verb.data(data);
-//     verb.option('owner', 'test')
+describe('verb usage', function() {
+	it('should work with verb', function(done) {
+		verb.engine('html', engine);
+		verb.data(data);
 
-//     verb.create('page', {isRenderable: true});
-//     verb.pages(templateFilePath);
-//     verb.render('index.html', function(err, html) {
-//       should.not.exist(err);
-//       should.exist(html);
-//       html.should.equal(expected);
-//       done();
-//     });
-//   });
-// });
+		verb.create('page', {isRenderable: true});
+		verb.pages(templateFilePath);
+		verb.render('index.html', function(err, html) {
+			should.not.exist(err);
+			should.exist(html);
+			html.should.equal(expected);
+			done();
+		});
+	});
+});
 
 describe('assemble usage', function() {
 	var app;
